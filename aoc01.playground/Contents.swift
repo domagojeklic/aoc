@@ -53,22 +53,75 @@ struct Position {
     }
 }
 
+struct Line {
+    var p1 : Position
+    var p2 : Position
+    var dir : CompasDirection
+}
+
+func Intersection(line : Line, linesArray : [Line]) -> Position? {
+    var p : Position? = nil
+    for l in linesArray {
+        if let pos = Intersection(l1: line, l2: l) {
+            p = pos
+            break
+        }
+    }
+    
+    return p
+}
+
+func Intersection(l1 : Line, l2 : Line) -> Position? {
+    var p : Position? = nil
+    if (IsBetween(a: l1.p1.x, b1: l2.p1.x, b2: l2.p2.x) &&
+        IsBetween(a: l2.p1.y, b1: l1.p1.y, b2: l1.p2.y)) {
+        p = Position(x: l1.p1.x, y: l2.p1.y)
+    }
+    if (IsBetween(a: l2.p1.x, b1: l1.p1.x, b2: l1.p2.x) &&
+        IsBetween(a: l1.p1.y, b1: l2.p1.y, b2: l2.p2.y)) {
+        p = Position(x: l2.p1.x, y: l1.p1.y)
+    }
+    return p
+}
+
+func IsBetween(a : Int, b1 : Int, b2: Int) -> Bool {
+    return (b1 > a && a > b2) || (b2 > a && a > b1)
+}
+
 var currCompassDir = CompasDirection.N
 var currPosition = Position(x: 0, y: 0)
+var linesNS = [Line]()
+var linesEW = [Line]()
 let formatedInput = input.replacingOccurrences(of: " ", with: "")
 let moves = formatedInput.characters.split(separator: ",").map(String.init)
+var intersection : Position? = nil
 
 for m in moves {
     let index = m.index(m.startIndex, offsetBy: 1)
     let d = m.substring(to: index)
     let l = m.substring(from: index)
     let dir = Direction(rawValue: d)!
+    let oldPosition = currPosition
     
     currCompassDir.turn(dir: dir)
     currPosition.move(dir: currCompassDir, len: Int(l)!)
+    
+    if intersection == nil {
+        let line = Line(p1: oldPosition, p2: currPosition, dir: currCompassDir)
+        
+        switch currCompassDir {
+        case .N, .S:
+            linesNS.append(line)
+            intersection = Intersection(line: line, linesArray: linesEW)
+        case .E, .W:
+            linesEW.append(line)
+            intersection = Intersection(line: line, linesArray: linesNS)
+        }
+    }
 }
 
 print(currPosition.description())
 print(currPosition.distance())
-
+print(intersection?.description() ?? "Intersection not found")
+print(intersection?.distance() ?? "Intersection not found")
 
