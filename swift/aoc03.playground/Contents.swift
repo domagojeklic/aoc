@@ -36,7 +36,7 @@ func numberOfValidTriangles(inputArray : [Int]) -> Int {
 	return count
 }
 
-func inputDataForChallange1(content : String) -> [Int] {
+func triangleSides(content : String) -> [Int] {
 	let triangleSides = content.components(separatedBy: .newlines)
 								.map{$0.components(separatedBy: .whitespaces)}
 								.flatMap{$0}
@@ -44,6 +44,20 @@ func inputDataForChallange1(content : String) -> [Int] {
 								.map{Int($0)!}
 	
 	return triangleSides
+}
+
+func triangleSidesColumnBased(inputSides: [Int]) -> [Int] {
+	var arr0 = [Int]()
+	var arr1 = [Int]()
+	var arr2 = [Int]()
+	
+	for i in stride(from: 0, to: inputSides.count, by: 3) {
+		arr0.append(inputSides[i])
+		arr1.append(inputSides[i + 1])
+		arr2.append(inputSides[i + 2])
+	}
+	
+	return arr0 + arr1 + arr2
 }
 
 func contentForFile(fileName: String, fileType: String) -> String? {
@@ -61,7 +75,10 @@ func contentForFile(fileName: String, fileType: String) -> String? {
 }
 
 let content = contentForFile(fileName: inputFileName, fileType: inputFileType)
-let triangleSides1 = inputDataForChallange1(content: content!)
+let triangleSides1 = triangleSides(content: content!)
+let triangleSides2 = triangleSidesColumnBased(inputSides: triangleSides1)
 let count1 = numberOfValidTriangles(inputArray: triangleSides1)
+let count2 = numberOfValidTriangles(inputArray: triangleSides2)
 
 print("First challange count: \(count1)")
+print("Second challange count: \(count2)")
