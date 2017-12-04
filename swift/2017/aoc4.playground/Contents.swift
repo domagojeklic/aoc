@@ -16,16 +16,16 @@ func getFileContent(fileName : String, fileType : String) -> String? {
 
 func isPhraseValid1(phrase : String) -> Bool {
 	var isValid = true
-	var wordCount = [String : Int]()
+	var appearedWords = Set<String>()
 	let words = phrase.components(separatedBy: .whitespaces)
 	
 	for w in words {
-		if wordCount[w] != nil {
+		if appearedWords.contains(w) {
 			isValid = false
 			break
 		}
 		
-		wordCount[w] = 1
+		appearedWords.insert(w)
 	}
 	
 	return isValid
@@ -33,7 +33,7 @@ func isPhraseValid1(phrase : String) -> Bool {
 
 func isPhraseValid2(phrase : String) -> Bool {
 	var isValid = true
-	var wordCount = [String : Int]()
+	var appearedWords = Set<String>()
 	let words = phrase.components(separatedBy: .whitespaces)
 	
 	for w in words {
@@ -41,12 +41,12 @@ func isPhraseValid2(phrase : String) -> Bool {
 			"\(r)\(c)"
 		}
 		
-		if wordCount[sw] != nil {
+		if appearedWords.contains(sw) {
 			isValid = false
 			break
 		}
 		
-		wordCount[sw] = 1
+		appearedWords.insert(sw)
 	}
 	
 	return isValid
