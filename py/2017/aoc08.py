@@ -16,7 +16,6 @@ def globals_max():
     return max(digits)
 def process_input(filename):
     with open(filename) as file:
-        # regex = re.compile(r'^(\w+)\s+(inc|dec)\s+(-*\d+)\s+if\s+((\w+)\s+((?:>|<|=|!)+)\s(-*\d+))')
         regex = re.compile(r'^(\w+)\s+(inc|dec)\s+(-*\d+)\s+if\s+((\w+).*$)')
         for l in file:
             (var_op, op, val_op, condition, var_con) = regex.search(l).groups()
