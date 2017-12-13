@@ -15,6 +15,7 @@ def globals_max():
     digits = [d for d in globals().values() if is_digit(d)]
     return max(digits)
 def process_input(filename):
+    max = None
     with open(filename) as file:
         regex = re.compile(r'^(\w+)\s+(inc|dec)\s+(-*\d+)\s+if\s+((\w+).*$)')
         for l in file:
@@ -24,7 +25,10 @@ def process_input(filename):
             if eval(condition):
                 op_str = '+=' if op == 'inc' else '-='
                 exec('global {0};{0} {1} {2}'.format(var_op, op_str, val_op))
+                if max == None or globals()[var_op] > max:
+                    max = globals()[var_op]
+    return max
 
 if __name__ == '__main__':
-    process_input("input08.txt")
+    print('Highest value in register {0}'.format(process_input("input08.txt")))
     print('Result = {0}'.format(globals_max()))
