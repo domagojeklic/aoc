@@ -15,6 +15,7 @@ def num_steps(x, y):
 def process_input(input):
     x = 0
     y = 0
+    maxnum = 0
 
     dirArr = input.split(',')
     for direction in dirArr:
@@ -37,8 +38,11 @@ def process_input(input):
             y += 0.5
         else:
             raise AssertionError
+        
+        num = num_steps(x, y)
+        maxnum = max(num, maxnum)
     
-    return (x, y)
+    return (x, y, maxnum)
 
 def get_input(filename):
     with open(filename) as f:
@@ -46,6 +50,6 @@ def get_input(filename):
 
 if __name__ == '__main__':
     input = get_input("input11.txt")
-    (x, y) = process_input(input)
-    print("x = {0}, y = {1}".format(x, y))
-    print("Result = {0}".format(num_steps(x, y)))
+    (x, y, maxnum) = process_input(input)
+    print("Result part 1: {0}".format(num_steps(x, y)))
+    print("Result part 2: {0}".format(maxnum))
