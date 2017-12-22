@@ -45,7 +45,21 @@ def update_positions(scanners_dict):
     for scanner in scanners_dict.values():
         scanner.update_position()
 
+def can_pass(scanners_dict, delay):
+    for scanner in scanners_dict.values():
+        if not ((scanner.depth + delay) % (2 * scanner.range - 2)):
+            return False
+    return True
+
+def min_pass_delay(scanners_dict):
+    delay = 0
+    while not can_pass(scanners_dict, delay):
+        delay += 1
+    return delay
+
 if __name__ == '__main__':
     scanners, max_layer = process_input('input13.txt')
-    result = severity(scanners, max_layer)
-    print('Result part 1: {0}'.format(result))
+    result1 = severity(scanners, max_layer)
+    print('Result part 1: {0}'.format(result1))
+    result2 = min_pass_delay(scanners)
+    print('Result part 2: {0}'.format(result2))
