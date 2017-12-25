@@ -1,12 +1,5 @@
 from aoc10 import knot_hash
 
-def num_ones(input):
-    count = 0
-    for c in input:
-        if c == '1':
-            count += 1
-    return count
-
 def num_squares(input):
     num = 0
     for i in range(128):
