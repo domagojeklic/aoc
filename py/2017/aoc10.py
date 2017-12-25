@@ -22,8 +22,13 @@ def process_lengths(elemarr, lenarr, idx = 0, skip_size = 0):
 
 def process_lenarr_ascii(lenarr):
     end_sequence = [17, 31, 73, 47, 23]
-    arrstr = str(lenarr)[1:-1]
-    arrstr = arrstr.replace(' ', '')
+
+    if type(lenarr) == type([]):
+        arrstr = str(lenarr)[1:-1]
+        arrstr = arrstr.replace(' ', '')
+    else:
+        arrstr = lenarr
+    
     final_arr = [ord(c) for c in arrstr]
     return final_arr + end_sequence
 
@@ -46,7 +51,7 @@ def solve_part1(elemlen, lenarr):
     process_lengths(elemarr, lenarr)
     return elemarr[0] * elemarr[1]
 
-def solve_part2(elemlen, lenarr):
+def knot_hash(lenarr, elemlen = 256):
     result = ''
     numrounds = 64
     chunk_size = 16
@@ -67,4 +72,4 @@ if __name__ == '__main__':
     lenarr = [183, 0, 31, 146, 254, 240, 223, 150, 2, 206, 161, 1, 255, 232, 199, 88]
     
     print('Result part 1 = {0}'.format(solve_part1(elemlen, lenarr)))
-    print('Result part 2 = {0}'.format(solve_part2(elemlen, lenarr)))
+    print('Result part 2 = {0}'.format(knot_hash(lenarr)))
