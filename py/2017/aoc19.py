@@ -17,6 +17,8 @@ def entry_point(maze):
             return (0, i)
 
 def end_point(x, y, direction, maze):
+    if not valid_point(x, y, maze):
+        return True
     point = maze[x][y]
     return point == '+' and len(connecting_points(x, y, direction, maze)) == 0
 
