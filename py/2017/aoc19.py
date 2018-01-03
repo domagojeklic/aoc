@@ -80,17 +80,19 @@ def run_maze(maze):
     solution = []
     direction = Direction.S
     x, y = entry_point(maze)
+    num_move = 0
 
     while not end_point(x, y, direction, maze):
         c = maze[x][y]
         if c.isalpha():
             solution.append(c)
         x, y, direction = move(x, y, direction, maze)
-
+        num_move += 1
     
-    return ''.join(solution)
+    return (''.join(solution), num_move)
 
 if __name__ == '__main__':
     maze = load_maze('input19.txt')
-    solution = run_maze(maze)
-    print(solution)
+    (solution, num_move) = run_maze(maze)
+    print('Result part 1: {0}'.format(solution))
+    print('Result part 2: {0}'.format(num_move))
