@@ -36,42 +36,47 @@ class Rule():
 
         permutations.add(RulePermutation(arr))
 
+        arrcpy = arr
+        for i in range(3):
+            arrcpy = copy.deepcopy(arrcpy)
+            rotate(arrcpy)
+            permutations.add(RulePermutation(arrcpy))
+
         #flip vertical
         arrcpy = copy.deepcopy(arr)
         switch_rows(arrcpy, 0, -1)
         permutations.add(RulePermutation(arrcpy))
+
+        for i in range(3):
+            arrcpy = copy.deepcopy(arrcpy)
+            rotate(arrcpy)
+            permutations.add(RulePermutation(arrcpy))
 
         #flip horizontal
         arrcpy = copy.deepcopy(arr)
         switch_cols(arrcpy, 0, -1)
         permutations.add(RulePermutation(arrcpy))
 
-        arrcpy = arr
-        for i in range(3):
-            arrcpy = copy.deepcopy(arrcpy)
-            rotate(arrcpy)
-            rp = RulePermutation(arrcpy)
-            if rp in permutations:
-                print('Already in permutations!')
-            
-            permutations.add(rp)
-
         return permutations
 
-    
 class RulePermutation():
+    
     def __init__(self, arr):
-        self.arr = arr
+        self.elements = tuple(tuple(e) for e in arr)
 
     def __str__(self):
-        joined_cols = [''.join(row) for row in self.arr]
+        joined_cols = [''.join(row) for row in self.elements]
         return '\n'.join(joined_cols)
 
     def __hash__(self):
         return hash(self.input_format())
 
+    def __eq__(self, other):
+        return self.input_format() == other.input_format()
+        
+
     def input_format(self):
-        joined_cols = [''.join(row) for row in self.arr]
+        joined_cols = [''.join(row) for row in self.elements]
         return '/'.join(joined_cols)
 
 if __name__ == '__main__':
